@@ -14,6 +14,7 @@
 - Spring Boot 调试工具和项目处理器
 - Spring AOP 切面编程
 - Spring 事务注解
+- Logback 日志框架
 
 ### 数据存储
 
@@ -33,13 +34,19 @@
 - 封装通用响应类
 - Swagger + Knife4j 接口文档
 - 自定义权限注解 + 全局校验
+- 日志自定义存储
 
 
 ## 业务功能
 
 - 用户登录、注册、注销、更新、检索、权限管理
+- 管理员对数据新增、删除、修改、查询
 
 
 ### 架构设计
 
 - 合理分层
+
+### 使用前提
+- 修改 src/resource/logback-application.xml 配置文件中的文件保存信息
+- 修改 src/resource/application.yml 配置文件中的数据库信息、redis 信息和端口号
