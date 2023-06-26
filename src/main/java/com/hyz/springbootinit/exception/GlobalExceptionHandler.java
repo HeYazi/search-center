@@ -18,13 +18,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
     @ExceptionHandler(BusinessException.class)
     public BaseResponse<?> businessExceptionHandler(BusinessException e) {
-        log.error("BusinessException:", e);
         return ResultUtils.error(e);
     }
 
     @ExceptionHandler(RuntimeException.class)
     public BaseResponse<?> runtimeExceptionHandler(RuntimeException e) {
-        log.error("BusinessException:", e);
         return ResultUtils.error(ErrorCode.SYSTEM_ERROR, "系统错误");
     }
 }

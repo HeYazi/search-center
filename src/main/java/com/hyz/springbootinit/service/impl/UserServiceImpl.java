@@ -53,21 +53,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     public Long userRegister(String userAccount, String userPassword, String checkPassword) {
         // 1. 参数校验
         if (userAccount.length() < 3) {
-            log.error("账号过短，请输入 3 位以上的账号");
             throw new BusinessException(ErrorCode.USER_OPERATION_ERROR, "账号过短，请输入 3 位以上的账号");
         }
         if (userPassword.length() < 6 || checkPassword.length() < 6) {
-            log.error("密码过短，请输入 6 位以上的密码");
             throw new BusinessException(ErrorCode.USER_OPERATION_ERROR, "密码过短，请输入 6 位以上的密码");
         }
         if (!userPassword.equals(checkPassword)) {
-            log.error("两次密码不一致");
             throw new BusinessException(ErrorCode.USER_OPERATION_ERROR, "两次密码不一致");
         }
         // 2. 账号不能重复
         // todo 第一版，用 string 来存储，第二版修改用 set 来存储。比较两版直接的差距
         if (Boolean.TRUE.equals(stringRedisTemplate.hasKey(UserConstant.REGISTER_CACHE + userAccount))) {
-            log.error("重复注册");
             throw new BusinessException(ErrorCode.USER_OPERATION_ERROR, "重复注册");
         } else {
             QueryWrapper<User> queryWrapper = new QueryWrapper<>();
@@ -75,7 +71,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             User one = this.getOne(queryWrapper);
             stringRedisTemplate.opsForValue().set(UserConstant.REGISTER_CACHE + userAccount, "已注册", 1, TimeUnit.MINUTES);
             if (one != null) {
-                log.error("重复注册");
                 throw new BusinessException(ErrorCode.USER_OPERATION_ERROR, "重复注册");
             }
         }
@@ -87,7 +82,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         user.setUserPassword(encryptPassword);
         boolean save = this.save(user);
         if (!save) {
-            log.error("添加失败");
             throw new BusinessException(ErrorCode.USER_OPERATION_ERROR, "添加失败");
         }
         stringRedisTemplate.opsForValue().set(UserConstant.REGISTER_CACHE + userAccount, "已注册", 1, TimeUnit.MINUTES);
@@ -102,7 +96,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         if (request != null) {
             String token = request.getHeader("token");
             if (Boolean.TRUE.equals(stringRedisTemplate.hasKey(UserConstant.LOGIN_USER_KEY + token))) {
-                log.error("用户【" + userAccount + "】重复登陆了");
                 return token;
             }
         }
@@ -113,7 +106,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
                 .eq(User::getUserPassword, encryptPassword);
         User user = this.getOne(queryWrapper);
         if (user == null) {
-            log.error("用户不存在或密码错误");
             throw new BusinessException(ErrorCode.USER_OPERATION_ERROR, "用户不存在或密码错误");
         }
         // 4. 登录用户转换
@@ -137,7 +129,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             stringRedisTemplate.delete(key);
         } else {
             // 不存在则抛出异常
-            log.error("用户不存在");
             throw new BusinessException(ErrorCode.USER_OPERATION_ERROR, "用户不存在");
         }
         return true;
@@ -151,13 +142,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         if (Boolean.TRUE.equals(stringRedisTemplate.hasKey(key))) {
             Map<Object, Object> userMap = stringRedisTemplate.opsForHash().entries(key);
             if (userMap.isEmpty()) {
-                log.error("用户不存在");
                 throw new BusinessException(ErrorCode.USER_OPERATION_ERROR, "用户不存在");
             }
             return BeanUtil.fillBeanWithMap(userMap, new LoginUserVO(), false);
         } else {
             // 不存在则抛出异常
-            log.error("用户不存在");
             throw new BusinessException(ErrorCode.USER_OPERATION_ERROR, "用户不存在");
         }
     }
@@ -168,7 +157,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         userInfoCheck(userAccount, userPassword);
         // 2. 判断用户权限是否存在
         if (!UserRoleEnum.getValueList().contains(userRole)) {
-            log.error("请分配有意义的用户权限");
             throw new BusinessException(ErrorCode.ADMIN_USER_OPERATION_ERROR, "请分配有意义的用户权限");
         }
         // 3. 用户不存在则保存用户
@@ -222,13 +210,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
      */
     private String tokenCheck(HttpServletRequest request) {
         if (request == null) {
-            log.error(ErrorCode.PARAMS_ERROR.getMessage());
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         String token = request.getHeader("token");
 
         if (StringUtils.isAllBlank(token)) {
-            log.error("用户未登录");
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "用户未登录");
         }
         return token;
@@ -243,11 +229,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     private void userInfoCheck(String userAccount, String userPassword) {
         // 1. 参数校验
         if (userAccount.length() < 3) {
-            log.error("账号过短，请输入 3 位以上的账号");
             throw new BusinessException(ErrorCode.USER_OPERATION_ERROR, "账号过短，请输入 3 位以上的账号");
         }
         if (userPassword.length() < 6) {
-            log.error("密码过短，请输入 6 位以上的密码");
             throw new BusinessException(ErrorCode.USER_OPERATION_ERROR, "密码过短，请输入 6 位以上的密码");
         }
     }

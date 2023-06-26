@@ -49,14 +49,12 @@ public class UserController {
     @ParamsCheck
     public BaseResponse<Long> userRegister(@RequestBody UserRegisterDTO userRegisterDTO) {
         if (userRegisterDTO == null) {
-            log.error(ErrorCode.PARAMS_ERROR.getMessage());
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         String userAccount = userRegisterDTO.getUserAccount();
         String userPassword = userRegisterDTO.getUserPassword();
         String checkPassword = userRegisterDTO.getCheckPassword();
         if (StringUtils.isAllBlank(userAccount, userPassword, checkPassword)) {
-            log.error("请求参数为空");
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "请求参数为空");
         }
         Long id = userService.userRegister(userAccount, userPassword, checkPassword);
@@ -74,13 +72,11 @@ public class UserController {
     public BaseResponse<String> userLogin(@RequestBody UserLoginDTO userLoginDTO
             , @Nullable HttpServletRequest request) {
         if (userLoginDTO == null) {
-            log.error(ErrorCode.PARAMS_ERROR.getMessage());
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         String userAccount = userLoginDTO.getUserAccount();
         String userPassword = userLoginDTO.getUserPassword();
         if (StringUtils.isAllBlank(userAccount, userPassword)) {
-            log.error("请求参数为空");
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "请求参数为空");
         }
         String token = userService.userLogin(userAccount, userPassword, request);
@@ -131,7 +127,6 @@ public class UserController {
         String userPassword = userAddDTO.getUserPassword();
         Integer userRole = userAddDTO.getUserRole();
         if (StringUtils.isAllBlank(userAccount, userPassword) || userRole == null) {
-            log.error("请求参数为空");
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "请求参数为空");
         }
         Long id = userService.addUser(userAccount, userPassword, userRole);
