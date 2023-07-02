@@ -1,6 +1,6 @@
 spring:
   application:
-    name: search-backend
+    name: springboot-init
   # MySQL 配置
   # todo：修改MySQL配置
   datasource:
