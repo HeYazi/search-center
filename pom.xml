@@ -13,10 +13,10 @@
     <!-- 优质的 spring/boot/data/security/cloud 框架中文文档尽在 => https://springdoc.cn -->
 
     <groupId>com.hyz</groupId>
-    <artifactId>springboot-init</artifactId>
+    <artifactId>search-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>springboot-init</name>
-    <description>springboot-init</description>
+    <name>search-backend</name>
+    <description>search-backend</description>
     <properties>
         <java.version>1.8</java.version>
     </properties>

@@ -7,9 +7,9 @@ debug：当此属性设置为true时，将打印出logback内部日志信息，�
 <configuration>
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
     <!-- 定义日志项目名称 -->
-    <property name="PROJECT_NAME" value="springboot-init"/>
+    <property name="PROJECT_NAME" value="search-backend"/>
     <!-- 定义日志模块名称 -->
-    <property name="APP_NAME" value="springboot-init"/>
+    <property name="APP_NAME" value="search-backend"/>
     <!-- 定义日志文件的路径 -->
     <property name="LOG_PATH" value="C:/Work/Code/Log/${PROJECT_NAME}/${APP_NAME}/logs"/>
     <!-- 定义日志的文件名 -->
