@@ -1,4 +1,3 @@
-
 -- 创建库
 create database if not exists db_search_center;
 
@@ -22,6 +21,23 @@ create table if not exists user
     isDelete     tinyint      default 0                 not null comment '是否删除',
     index idx_unionId (unionId)
 ) comment '用户' collate = utf8mb4_unicode_ci;
+
+-- 插入数据
+INSERT INTO user (userAccount, userPassword, unionId, mpOpenId, userName, userAvatar, userProfile, userRole, createTime,
+                  updateTime, isDelete)
+VALUES ('john123', 'password123', 'unionid123', 'mpopenid123', '张三', 'https://example.com/avatar.jpg', '我是张三',
+        'user',
+        '2023-07-19 10:00:00', '2023-07-19 10:00:00', 0),
+       ('jane456', 'password456', NULL, 'mpopenid456', '李四', 'https://example.com/avatar.jpg', '我是李四', 'user',
+        '2023-07-19 11:00:00', '2023-07-19 11:00:00', 0),
+       ('alice789', 'alicepass789', 'unionid789', 'mpopenid789', '王五', 'https://example.com/avatar.jpg', '我是王五', 'user',
+        '2023-07-19 12:00:00', '2023-07-19 12:00:00', 0)
+        ,
+       ('bob101', 'bobpass101', NULL, 'mpopenid101', '赵六', 'https://example.com/avatar.jpg', '我是赵六', 'user',
+        '2023-07-19 13:00:00', '2023-07-19 13:00:00', 0)
+        ,
+       ('emily202', 'emilypass202', 'unionid202', NULL, '刘七', 'https://example.com/avatar.jpg', '我是刘七', 'user',
+        '2023-07-19 14:00:00', '2023-07-19 14:00:00', 0);
 
 -- 帖子表
 create table if not exists post

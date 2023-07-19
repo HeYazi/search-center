@@ -1,5 +1,6 @@
 package com.hyz.searchcenter.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -101,6 +102,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         if (postQueryRequest == null) {
             return queryWrapper;
         }
+
         String searchText = postQueryRequest.getSearchText();
         String sortField = postQueryRequest.getSortField();
         String sortOrder = postQueryRequest.getSortOrder();
@@ -110,6 +112,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         List<String> tagList = postQueryRequest.getTags();
         Long userId = postQueryRequest.getUserId();
         Long notId = postQueryRequest.getNotId();
+
         // 拼接查询条件
         if (StringUtils.isNotBlank(searchText)) {
             queryWrapper.like("title", searchText).or().like("content", searchText);
@@ -127,6 +130,21 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         queryWrapper.eq("isDelete", false);
         queryWrapper.orderBy(SqlUtils.validSortField(sortField), sortOrder.equals(CommonConstant.SORT_ORDER_ASC),
                 sortField);
+
+//        LambdaQueryWrapper<Post> lambda = queryWrapper.lambda();
+//        if (StringUtils.isNotBlank(searchText)) {
+//            lambda.like(Post::getTitle, searchText).or().like(Post::getContent, searchText);
+//        }
+//        lambda.like(StringUtils.isNotBlank(title), Post::getTitle, title);
+//        lambda.like(StringUtils.isNotBlank(content), Post::getContent, content);
+//        if (CollectionUtils.isNotEmpty(tagList)) {
+//            lambda.in(Post::getTags, tagList);
+//        }
+//        lambda.ne(ObjectUtils.isNotEmpty(notId), Post::getId, notId);
+//        lambda.eq(ObjectUtils.isNotEmpty(id), Post::getId, id);
+//        lambda.eq(ObjectUtils.isNotEmpty(userId), Post::getUserId, userId);
+//        lambda.eq(Post::getIsDelete, false);
+
         return queryWrapper;
     }
 
