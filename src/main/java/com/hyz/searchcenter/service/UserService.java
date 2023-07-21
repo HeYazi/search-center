@@ -1,6 +1,7 @@
 package com.hyz.searchcenter.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.hyz.searchcenter.model.dto.user.UserQueryRequest;
 import com.hyz.searchcenter.model.entity.User;
@@ -118,5 +119,13 @@ public interface UserService extends IService<User> {
      * @return
      */
     QueryWrapper<User> getQueryWrapper(UserQueryRequest userQueryRequest);
+
+    /**
+     * 分页查询搜索用户
+     *
+     * @param userQueryRequest 用户查询请求
+     * @return {@link Page}<{@link UserVO}>
+     */
+    Page<UserVO> listUserVOByPage(UserQueryRequest userQueryRequest);
 
 }
